@@ -16,6 +16,7 @@ This repository is our research paper implementation **CyberSentinel**, a sophis
 
 ## Overview
 CyberSentinel transforms binary malware files into image representations to leverage advanced image classification models. Its two-branch network utilizes asymmetric spatial attention and an auxiliary attention branch, enhancing feature extraction and malware classification accuracy significantly.
+![network](evaluation/net24-03406-g003.png)
 
 ## Project Structure
 ```
