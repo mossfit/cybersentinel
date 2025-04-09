@@ -92,6 +92,8 @@ Train the CyberSentinel model:
 ```bash
 python main.py
 ```
+![train](evaluation/res-24-03406-g008.png)
+
 Adjust training parameters within `utils/config.py`.
 
 ## Evaluation and Visualization
