@@ -1,17 +1,15 @@
 import numpy as np
 from PIL import Image
-import math
 
-def pe_to_image(pe_file, width=256):
+def binary_to_image(pe_file, width=256):
     with open(pe_file, 'rb') as f:
-        content = f.read()
+        data = f.read()
 
-    binary_values = np.frombuffer(content, dtype=np.uint8)
-    height = math.ceil(len(binary_values) / width)
+    length = len(data)
+    height = np.ceil(length / width).astype(int)
     padded_length = width * height
-    padded_binary = np.pad(binary_values, (0, padded_length - len(binary_values)), 'constant', constant_values=0)
+    data_padded = np.pad(np.frombuffer(data, dtype=np.uint8), (0, padded_length - length), mode='constant')
 
-    image_array = padded_binary.reshape(height, width)
-    image = Image.fromarray(image_array).convert('RGB')
-    
-    return image
+    img_matrix = data_padded.reshape(height, width)
+    colored_img = Image.fromarray(img_matrix).convert('RGB')
+    return colored_img
