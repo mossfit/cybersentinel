@@ -1,21 +1,21 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 class ASAM(nn.Module):
     def __init__(self, channels):
         super(ASAM, self).__init__()
-        self.square_conv = nn.Conv2d(channels, channels, kernel_size=9, padding=4)
-        self.vert_conv = nn.Conv2d(channels, channels, kernel_size=(3,1), padding=(1,0))
-        self.hor_conv = nn.Conv2d(channels, channels, kernel_size=(1,3), padding=(0,1))
+        self.sq_conv = nn.Conv2d(channels, channels, 9, padding=4, groups=channels)
+        self.v_conv = nn.Conv2d(channels, channels, (3,1), padding=(1,0), groups=channels)
+        self.h_conv = nn.Conv2d(channels, channels, (1,3), padding=(0,1), groups=channels)
+        self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
-        square = self.square_conv(x)
-        vertical = self.vert_conv(x)
-        horizontal = self.hor_conv(x)
-        
-        v_attn = torch.sigmoid(torch.cat([vertical.mean(1, keepdim=True), vertical.max(1, keepdim=True)[0]], dim=1))
-        h_attn = torch.sigmoid(torch.cat([horizontal.mean(1, keepdim=True), horizontal.max(1, keepdim=True)[0]], dim=1))
+        square = self.sq_conv(x)
+        v_feature = self.v_conv(x)
+        h_feature = self.h_conv(x)
 
-        combined = square * (v_attn + h_attn)
-        return combined
+        v_attn = self.sigmoid(v_feature.mean(1, keepdim=True) + v_feature.amax(1, keepdim=True))
+        h_attn = self.sigmoid(h_feature.mean(1, keepdim=True) + h_feature.amax(1, keepdim=True))
+
+        combined_attn = square * (v_attn + h_attn)
+        return combined_attn
