@@ -102,6 +102,7 @@ Evaluate model performance and visualize results:
 python evaluation/visualizations.py
 ```
 This provides accuracy, precision, recall, F1-score, confusion matrices, and ROC curves.
+![malware](evaluation/img-24-03406-g007.png)
 
 ## References
 Basak, M.; Han, M.-M. CyberSentinel: A Transparent Defense Framework for Malware Detection in High-Stakes Operational Environments. *Sensors* **2024**, *24*, 3406. [doi:10.3390/s24113406](https://doi.org/10.3390/s24113406)
